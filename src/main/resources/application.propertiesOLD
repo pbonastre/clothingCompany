@@ -1,7 +1,0 @@
-application.id=clothing-comp-id
-bootstrap.servers=localhost:29092
-
-input.topic.name=offline
-
-key.serializer=org.apache.kafka.common.serialization.StringSerializer
-value.serializer=org.apache.kafka.common.serialization.StringSerializer

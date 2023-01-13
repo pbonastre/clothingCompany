@@ -36,21 +36,9 @@ spring:
           group: offline-payments-gr
           consumer:
             maxAttempts: 4
-            retryableExceptions:
-              com:
-                wefox:
-                  clothingCompany:
-                    exceptions:
-                      BusinessException: false
         onlinePayment-in-0:
           destination: online
           group: online-payments-gr
           consumer:
             maxAttempts: 4
-            retryableExceptions:
-              com:
-                wefox:
-                  clothingCompany:
-                    exceptions:
-                      BusinessException: false
 

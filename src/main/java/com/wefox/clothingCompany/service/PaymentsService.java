@@ -9,15 +9,14 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PaymentsService implements PaymentOperation {
+public class PaymentsService {
 
 
-    @Override
     public void saveValidPayment(Payment payment) {
         
     }
 
-    @Override
+
     public void validateAndSavePayment(Payment payment) {
         log.debug("Valor de paymentID:" + payment.getPaymentId());
 
