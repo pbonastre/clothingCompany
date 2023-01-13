@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 
 @Component("offlinePayment")
 @Slf4j
-public class OfflinePaymentConsumer implements Consumer<OfflinePaymentDTO> {
+public class OfflinePaymentConsumer implements Consumer<Payment> {
 
     private PaymentsService paymentsService;
 
@@ -22,14 +22,14 @@ public class OfflinePaymentConsumer implements Consumer<OfflinePaymentDTO> {
         this.paymentsService = paymentsService;
     }
    @Override
-    public void accept(OfflinePaymentDTO offlinePaymentDTO) {
-        if(PaymentType.OFFLINE != PaymentType.of(offlinePaymentDTO.getPayment_type())) {
-            throw new OfflinePaymentExpected(offlinePaymentDTO.getPayment_id(), offlinePaymentDTO.getPayment_type());
+    public void accept(Payment offlinePaymentDTO) {
+        if(PaymentType.OFFLINE != PaymentType.of(offlinePaymentDTO.getPaymentType())) {
+            throw new OfflinePaymentExpected(offlinePaymentDTO.getPaymentId(), offlinePaymentDTO.getPaymentType());
         }
         paymentsService.saveValidPayment(Payment.builder()
-            .paymentId(offlinePaymentDTO.getPayment_id())
-            .accountId(String.valueOf(offlinePaymentDTO.getAccount_id()))
-            .paymentType(PaymentType.OFFLINE)
+            .paymentId(offlinePaymentDTO.getPaymentId())
+            .accountId(String.valueOf(offlinePaymentDTO.getAccountId()))
+            .paymentType(PaymentType.OFFLINE.toString())
             .amount(offlinePaymentDTO.getAmount())
             .build());
     }

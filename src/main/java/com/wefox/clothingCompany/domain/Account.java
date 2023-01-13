@@ -20,6 +20,6 @@ public class Account {
     private LocalDateTime lastPaymentDate;
 
     public void addPayment(@NonNull Payment payment) {
-        this.lastPaymentDate = payment.getCreatedOn();
+        this.lastPaymentDate = payment.getCreateAt();
     }
 }

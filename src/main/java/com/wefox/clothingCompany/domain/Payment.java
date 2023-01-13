@@ -1,25 +1,35 @@
 package com.wefox.clothingCompany.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Builder
-@ToString
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Payment {
-    @NonNull
+    @NotNull
+    @JsonProperty("payment_id")
     private String paymentId;
-    @NonNull
+    @NotNull
+    @JsonProperty("account_id")
     private String accountId;
-    @NonNull
-    private PaymentType paymentType;
+    @NotNull
+    @JsonProperty("payment_type")
+    private String paymentType;
+    @JsonProperty("credit_card")
     private String creditCard;
-    @NonNull
+    @NotNull
     private BigDecimal amount;
-    private LocalDateTime createdOn;
+
+    private BigDecimal delay;
+
+    private LocalDateTime createAt;
+
+
+
 }
