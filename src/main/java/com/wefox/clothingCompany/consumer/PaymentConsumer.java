@@ -10,20 +10,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class PaymentConsumer{
+public class PaymentConsumer {
 
-    private PaymentService paymentService;
+  private PaymentService paymentService;
 
-    public PaymentConsumer(PaymentService paymentService) {
-        this.paymentService = paymentService;
+  public PaymentConsumer(PaymentService paymentService) {
+    this.paymentService = paymentService;
+  }
+
+  @KafkaListener(topics = {"online", "offline"}, groupId = "myGroup", concurrency = "2")
+  public void processMessage(Payment payment) {
+    if (PaymentType.OFFLINE.toString().equals(payment.getPaymentType())) {
+      paymentService.saveValidPayment(payment);
+    } else {
+      paymentService.validateAndSavePayment(payment);
     }
-
-    @KafkaListener(topics = {"online","offline"}, groupId = "myGroup", concurrency = "2")
-    public void processMessage(Payment payment) {
-        if(PaymentType.OFFLINE.toString().equals(payment.getPaymentType())){
-            paymentService.saveValidPayment(payment);
-        } else{
-            paymentService.validateAndSavePayment(payment);
-        }
-    }
+  }
 }
