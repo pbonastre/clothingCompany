@@ -1,44 +1,24 @@
 logging:
   level:
-    root: INFO
+    root: DEBUG
 
 server:
   port: 8081
-spring:
-  application:
-    name: payments-mic
-  sleuth:
-    sampler:
-      rate: 50
-      probability: 1.0
-  zipkin:
-    baseUrl: http://localhost:9411/
-  cloud:
-    stream:
-      function:
-        definition: offlinePayment;onlinePayment
-      kafka:
-        binder:
-          brokers: "localhost:29092"
-          zkNodes: "localhost:2181"
-        bindings:
-          offlinePayment-in-0:
-            consumer:
-              enableDlq: true
-              dlqName: offline.dlq
-          onlinePayment-in-0:
-            consumer:
-              enableDlq: true
-              dlqName: online.dlq
-      bindings:
-        offlinePayment-in-0:
-          destination: offline
-          group: offline-payments-gr
-          consumer:
-            maxAttempts: 4
-        onlinePayment-in-0:
-          destination: online
-          group: online-payments-gr
-          consumer:
-            maxAttempts: 4
+spring.kafka.bootstrap-servers: localhost:29092
+spring.kafka.consumer.group-id: myGroup
+spring.kafka.consumer.auto-offset-reset: earliest
+spring.kafka.consumer.key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+spring.kafka.consumer.properties.spring.json.trusted.packages: "*"
+spring.kafka.consumer.properties.spring.json.value.default.type: com.wefox.clothingCompany.domain.Payment
 
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/payments
+    username: tech
+    password: test
+    driverClassName: org.postgresql.Driver

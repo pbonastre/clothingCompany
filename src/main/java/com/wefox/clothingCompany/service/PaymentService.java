@@ -1,10 +1,9 @@
-package com.wefox.clothingCompany.operation;
+package com.wefox.clothingCompany.service;
 
 import com.wefox.clothingCompany.domain.Payment;
 
-public interface PaymentOperation {
+public interface PaymentService {
     void saveValidPayment(Payment payment);
-
     void validateAndSavePayment(Payment payment);
 
 }
