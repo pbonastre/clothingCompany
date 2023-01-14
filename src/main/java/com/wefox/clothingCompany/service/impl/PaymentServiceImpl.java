@@ -15,10 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
+@Transactional
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
@@ -91,7 +93,7 @@ public class PaymentServiceImpl implements PaymentService {
       errorService.saveErrorPayment(PaymentError.builder().
         paymentId(payment.getPaymentId())
         .errorType(ErrorType.OTHER)
-        .errorDescription("The Payment obtained is not valid.").build());
+        .errorDescription("The Payment obtained with payment ID: " + payment.getPaymentId() + "  is not valid.").build());
       log.debug("Invalid payment :" + payment.getPaymentId());
     }
   }

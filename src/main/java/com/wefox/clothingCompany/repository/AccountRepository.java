@@ -2,7 +2,9 @@ package com.wefox.clothingCompany.repository;
 
 import com.wefox.clothingCompany.model.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 
+import javax.persistence.LockModeType;
 import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
@@ -12,7 +14,7 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
      * @param accountId account id
      * @return the Account if exists
      */
-    //@Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_READ)
     public Optional<AccountEntity> findById(Integer accountId);
 
 }
