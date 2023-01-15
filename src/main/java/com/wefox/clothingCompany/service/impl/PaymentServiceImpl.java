@@ -29,8 +29,8 @@ public class PaymentServiceImpl implements PaymentService {
   private final AccountRepository accountRepository;
 
   private final ErrorService errorService;
+
   private final WebClient webClient;
-  private AppPropertiesConfiguration appPropertiesConfiguration;
 
   public PaymentServiceImpl(PaymentRepository paymentRepository, AccountRepository accountRepository,
                             WebClient.Builder webclientBuilder, ErrorService errorService
@@ -38,7 +38,6 @@ public class PaymentServiceImpl implements PaymentService {
     this.paymentRepository = paymentRepository;
     this.accountRepository = accountRepository;
     this.errorService = errorService;
-    this.appPropertiesConfiguration = appPropertiesConfiguration;
     this.webClient = webclientBuilder.baseUrl(appPropertiesConfiguration.getPaymentUrl()).build();
   }
 

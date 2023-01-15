@@ -28,11 +28,9 @@ public class ErrorServiceImplTest {
 
   private ErrorService errorService;
 
-  private AppPropertiesConfiguration appPropertiesConfiguration;
-
   @BeforeEach
   void setUp() {
-    appPropertiesConfiguration = new AppPropertiesConfiguration();
+    AppPropertiesConfiguration appPropertiesConfiguration = new AppPropertiesConfiguration();
     appPropertiesConfiguration.setPaymentUrl(mockWebServer.url("/").toString());
     errorService = new ErrorServiceImpl(WebClient.builder(), appPropertiesConfiguration);
   }

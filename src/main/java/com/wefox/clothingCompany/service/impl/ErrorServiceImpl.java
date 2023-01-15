@@ -15,10 +15,7 @@ import reactor.core.publisher.Mono;
 public class ErrorServiceImpl implements ErrorService {
   private final WebClient webClient;
 
-  private AppPropertiesConfiguration appPropertiesConfiguration;
-
   public ErrorServiceImpl(WebClient.Builder webclientBuilder, AppPropertiesConfiguration appPropertiesConfiguration) {
-    this.appPropertiesConfiguration = appPropertiesConfiguration;
     this.webClient = webclientBuilder.baseUrl(appPropertiesConfiguration.getPaymentUrl()).build();
   }
 
