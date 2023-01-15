@@ -1,5 +1,6 @@
 package com.wefox.clothingCompany.service.impl;
 
+import com.wefox.clothingCompany.config.AppPropertiesConfiguration;
 import com.wefox.clothingCompany.domain.PaymentError;
 import com.wefox.clothingCompany.service.ErrorService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,14 +14,16 @@ import reactor.core.publisher.Mono;
 @Service
 public class ErrorServiceImpl implements ErrorService {
   private final WebClient webClient;
-  public static final String BASE_URL = "http://localhost:9000";
 
-  public ErrorServiceImpl(WebClient.Builder webclientBuilder) {
-    this.webClient = webclientBuilder.baseUrl(BASE_URL).build();
+  private AppPropertiesConfiguration appPropertiesConfiguration;
+
+  public ErrorServiceImpl(WebClient.Builder webclientBuilder, AppPropertiesConfiguration appPropertiesConfiguration) {
+    this.appPropertiesConfiguration = appPropertiesConfiguration;
+    this.webClient = webclientBuilder.baseUrl(appPropertiesConfiguration.getPaymentUrl()).build();
   }
 
-  public void saveErrorPayment(PaymentError paymentError) {
-    webClient.post()
+  public PaymentError saveErrorPayment(PaymentError paymentError) {
+    return paymentError = webClient.post()
       .uri("/log")
       .body(Mono.just(paymentError), PaymentError.class)
       .retrieve()

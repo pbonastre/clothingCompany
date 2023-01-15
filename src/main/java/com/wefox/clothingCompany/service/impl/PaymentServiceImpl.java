@@ -1,5 +1,6 @@
 package com.wefox.clothingCompany.service.impl;
 
+import com.wefox.clothingCompany.config.AppPropertiesConfiguration;
 import com.wefox.clothingCompany.domain.ErrorType;
 import com.wefox.clothingCompany.domain.Payment;
 import com.wefox.clothingCompany.domain.PaymentError;
@@ -24,19 +25,21 @@ import java.util.Optional;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
-  public static final String BASE_URL = "http://localhost:9000";
   private final PaymentRepository paymentRepository;
   private final AccountRepository accountRepository;
 
   private final ErrorService errorService;
   private final WebClient webClient;
+  private AppPropertiesConfiguration appPropertiesConfiguration;
 
   public PaymentServiceImpl(PaymentRepository paymentRepository, AccountRepository accountRepository,
-                            WebClient.Builder webclientBuilder, ErrorService errorService) {
+                            WebClient.Builder webclientBuilder, ErrorService errorService
+    , AppPropertiesConfiguration appPropertiesConfiguration) {
     this.paymentRepository = paymentRepository;
     this.accountRepository = accountRepository;
     this.errorService = errorService;
-    this.webClient = webclientBuilder.baseUrl(BASE_URL).build();
+    this.appPropertiesConfiguration = appPropertiesConfiguration;
+    this.webClient = webclientBuilder.baseUrl(appPropertiesConfiguration.getPaymentUrl()).build();
   }
 
   /**

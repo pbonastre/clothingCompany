@@ -22,3 +22,7 @@ spring:
     username: tech
     password: test
     driverClassName: org.postgresql.Driver
+
+app:
+  payment:
+    base-url: http://localhost:9000
