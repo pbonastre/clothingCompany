@@ -22,7 +22,7 @@ public class PaymentConsumer {
    *
    * @param payment Payment message
    */
-  @KafkaListener(topics = {"online", "offline"}, groupId = "myGroup", concurrency = "2")
+  @KafkaListener(topics = {"online", "offline"}, groupId = "myGroup", concurrency = "2", errorHandler = "paymentErrorHandler")
   public void processMessage(Payment payment) {
     if (PaymentType.OFFLINE.toString().equals(payment.getPaymentType())) {
       paymentService.saveValidPayment(payment);
