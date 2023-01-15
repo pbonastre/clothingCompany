@@ -1,10 +1,13 @@
 package com.wefox.clothingCompany.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wefox.clothingCompany.config.AppPropertiesConfiguration;
 import com.wefox.clothingCompany.domain.ErrorType;
 import com.wefox.clothingCompany.domain.Payment;
 import com.wefox.clothingCompany.domain.PaymentError;
 import com.wefox.clothingCompany.domain.PaymentType;
+import com.wefox.clothingCompany.exception.AccountNotFoundException;
 import com.wefox.clothingCompany.model.AccountEntity;
 import com.wefox.clothingCompany.model.PaymentEntity;
 import com.wefox.clothingCompany.repository.AccountRepository;
@@ -14,6 +17,7 @@ import com.wefox.clothingCompany.service.PaymentService;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -121,6 +125,25 @@ public class PaymentServiceImplTest {
     paymentService.saveValidPayment(payment);
 
     verify(paymentRepository, times(1)).existsByPaymentId("1");
+  }
+
+  @Test
+  public void saveValidPaymentAccountDoesNotExists() throws JsonProcessingException {
+    lenient().when(paymentRepository.existsByPaymentId(any())).thenReturn(Boolean.TRUE);
+    lenient().when(accountRepository.findById(any())).thenReturn(Optional.ofNullable(null));
+    lenient().when(accountRepository.save(any())).thenReturn(accountEntity);
+
+    final ObjectMapper objectMapper = new ObjectMapper();
+    PaymentError paymentError = PaymentError.builder().paymentId("1").errorType(ErrorType.OTHER).errorDescription("Error in the execution.").build();
+    mockWebServer.enqueue(new MockResponse()
+      .setResponseCode(200)
+      .setBody(objectMapper.writeValueAsString(paymentError))
+      .addHeader("Content-type", "application/json"));
+
+    AccountNotFoundException accountException = Assertions.assertThrows(AccountNotFoundException.class, () -> {
+      paymentService.saveValidPayment(payment);
+    });
+    Assertions.assertEquals("Payment Id 1 with Account Id 122 not found", accountException.getMessage());
   }
 
   @Test

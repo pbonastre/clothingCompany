@@ -1,6 +1,5 @@
 package com.wefox.clothingCompany.consumer;
 
-
 import com.wefox.clothingCompany.domain.Payment;
 import com.wefox.clothingCompany.domain.PaymentType;
 import com.wefox.clothingCompany.service.PaymentService;
@@ -18,6 +17,11 @@ public class PaymentConsumer {
     this.paymentService = paymentService;
   }
 
+  /**
+   * Process Payment messages from topic online and offline
+   *
+   * @param payment Payment message
+   */
   @KafkaListener(topics = {"online", "offline"}, groupId = "myGroup", concurrency = "2")
   public void processMessage(Payment payment) {
     if (PaymentType.OFFLINE.toString().equals(payment.getPaymentType())) {

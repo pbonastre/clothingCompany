@@ -7,6 +7,6 @@ public class AccountNotFoundException extends RuntimeException {
     }
 
     public AccountNotFoundException(String paymentId, String accountId) {
-        super("Payment " + paymentId + " | Account " + accountId + " not found");
+        super("Payment Id " + paymentId + " with Account Id " + accountId + " not found");
     }
 }

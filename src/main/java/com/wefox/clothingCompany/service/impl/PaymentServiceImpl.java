@@ -69,6 +69,11 @@ public class PaymentServiceImpl implements PaymentService {
         accountRepository.save(theAcc);
       },
       () -> {
+        errorService.saveErrorPayment(PaymentError.builder().
+          paymentId(payment.getPaymentId())
+          .errorType(ErrorType.DATABASE)
+          .errorDescription("The Account with ID: " + payment.getAccountId() + "  was not found.").build());
+
         throw new AccountNotFoundException(payment.getPaymentId(), payment.getAccountId());
       });
   }
